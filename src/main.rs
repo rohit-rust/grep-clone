@@ -13,7 +13,7 @@ fn main() {
             _ => false
         },
         "--ignore_case" => true,
-        _ => unreachable!()
+        _ => false
     };
     
 
