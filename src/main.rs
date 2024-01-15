@@ -17,18 +17,18 @@ fn main() {
     };
     
 
-    let inputs = utils::Input::build(&args,ignore_case).unwrap_or_else(|error|{
+    let inputs = utils::Input::build(env::args(),ignore_case).unwrap_or_else(|error|{
         println!("problem parsing the argument: {}",error);
         process::exit(1)
     });
 
-    if let Ok(data) = utils::read_data(&inputs) {
+    if let Ok(contents) = utils::read_data(&inputs) {
         if inputs.ignore_case == true {
-            for output in lib::search_insensitive(&inputs.data,&data) {
+            for output in lib::search_insensitive(&inputs.query,&contents) {
                 println!("output: {}",output)
-            }            
+            }
         } else {
-            for output in lib::search(&inputs.data,&data) {
+            for output in lib::search(&inputs.query,&contents) {
                 println!("output: {}",output)
             }
         }

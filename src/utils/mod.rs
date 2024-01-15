@@ -12,20 +12,29 @@ pub enum CustomError {
 
 
 pub struct Input {
-    pub data: String,
+    pub query: String,
     pub path: String,
     pub ignore_case: bool
 }
 
 impl Input {
-    pub fn build(args: &Vec<String>,ignore_case: bool) -> Result<Self,CustomError> {
-        if args.len() < 3 {
-            return Err(CustomError::Message("expected at least two arguments".to_string()))
-        }
+    pub fn build(mut args: impl Iterator<Item=String>,ignore_case: bool) -> Result<Self,CustomError> {
+        args.next();
+
+        let args1 = match args.next() {
+            Some(query) => query,
+            None => return Err(CustomError::Message("query not found".to_string()))
+        };
+
+        let args2 = match args.next() {
+            Some(file_path) => file_path,
+            None => return Err(CustomError::Message("file path not found".to_string()))      
+
+        };
 
         Ok(Self {
-            data: args[1].to_owned(),
-            path: args[2].to_owned(),
+            query: args1,
+            path: args2,
             ignore_case
         })
     }
